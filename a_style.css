@@ -1,0 +1,81 @@
+:root {
+    --a-main: #d5bdaf;
+    --a-text: #555;
+    --a-accent: #e76f51;
+}
+
+body { margin: 0; font-family: 'Noto Sans TC', sans-serif; color: var(--a-text); line-height: 1.8; scroll-behavior: smooth; }
+.a_container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* 導覽列 */
+.a_header { background: #fff; border-bottom: 1px solid #eee; padding: 15px 0; position: sticky; top: 0; z-index: 100; }
+.a_nav_flex { display: flex; justify-content: space-between; align-items: center; }
+.a_logo { font-size: 1.6rem; font-weight: bold; color: var(--a-main); text-decoration: none; }
+.a_menu a { margin-left: 20px; text-decoration: none; color: #777; font-size: 14px; transition: 0.3s; }
+.a_menu a:hover { color: var(--a-main); }
+
+/* 主佈局 */
+.a_product_main { display: flex; gap: 60px; padding: 50px 0; }
+.a_left_col, .a_right_col { flex: 1; }
+
+/* 輪播與縮圖 */
+.a_stage { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; border-radius: 12px; height: 500px; }
+.a_stage::-webkit-scrollbar { display: none; }
+.a_stage img { width: 100%; flex-shrink: 0; scroll-snap-align: start; object-fit: cover; }
+.a_thumbs { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+.a_thumbs img { width: 60px; height: 60px; border-radius: 6px; border: 2px solid transparent; object-fit: cover; }
+
+/* 顏色圈圈修正 */
+.a_color_list { display: flex; gap: 15px; margin: 10px 0; }
+.a_color_list input { display: none; }
+.a_color_list label { 
+    display: inline-block; 
+    width: 32px; height: 32px; 
+    border-radius: 50%; border: 2px solid #fff; 
+    outline: 1px solid #ddd; cursor: pointer; 
+}
+.a_color_list input:checked + label { outline: 2px solid var(--a-main); transform: scale(1.1); }
+
+/* 庫存狀態 */
+.a_price_box { margin: 20px 0; display: flex; align-items: baseline; gap: 15px; }
+.a_price { font-size: 2rem; font-weight: bold; color: var(--a-accent); }
+.a_stock { font-size: 13px; color: #9d8189; background: #fff1f2; padding: 2px 10px; border-radius: 4px; }
+
+/* 輸入與按鈕 */
+.a_field { margin-bottom: 25px; }
+.a_field label { display: block; font-weight: bold; margin-bottom: 5px; }
+#a_text, #a_qty { padding: 12px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; outline: none; }
+#a_qty { width: 80px; text-align: center; }
+
+.a_action_row { display: flex; gap: 10px; margin-top: 20px; }
+.a_cart_btn { flex: 1; padding: 16px; background: var(--a-main); color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 1.1rem; }
+.a_wish_btn { width: 60px; background: #fff; border: 1px solid #ddd; border-radius: 6px; color: #ccc; cursor: pointer; font-size: 1.5rem; transition: 0.3s; }
+
+.a_social_share { margin-top: 25px; font-size: 13px; color: #aaa; display: flex; align-items: center; gap: 10px; }
+.a_social_icon { text-decoration: none; color: #777; border: 1px solid #eee; padding: 3px 10px; border-radius: 4px; }
+
+/* 詳細介紹與服務條 */
+.a_details { padding: 60px 0; border-top: 1px solid #eee; }
+.a_sec_head { text-align: center; margin-bottom: 50px; }
+.a_bar { width: 40px; height: 3px; background: var(--a-main); margin: 10px auto; }
+.a_item { display: flex; align-items: center; gap: 50px; margin-bottom: 60px; }
+.a_item img { width: 50%; border-radius: 10px; }
+.a_flip { flex-direction: row-reverse; }
+
+.a_service_banner { background: #f9f4f0; padding: 50px 0; border-top: 1px solid #eee; }
+.a_service_grid { display: flex; justify-content: space-around; text-align: center; }
+.a_s_item img { width: 45px; margin-bottom: 15px; }
+
+/* 購物指南 */
+.a_guide_section { background: #fafafa; padding: 40px; border-radius: 12px; margin: 40px 0 80px; }
+.a_guide_grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.a_guide_box h3 { font-size: 1.1rem; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; }
+.a_guide_box h3 a { text-decoration: none; color: inherit; }
+.a_guide_box p { font-size: 14px; color: #777; margin: 5px 0; }
+
+.a_footer { background: #333; color: #fff; text-align: center; padding: 30px 0; font-size: 12px; }
+
+@media (max-width: 768px) {
+    .a_product_main, .a_nav_flex, .a_item, .a_guide_grid { flex-direction: column; text-align: center; }
+    .a_item img { width: 100%; }
+}

@@ -1,0 +1,74 @@
+:root {
+    --b-main: #e6beae;
+    --b-text: #5a5a5a;
+    --b-accent: #e76f51;
+}
+
+body { margin: 0; font-family: 'Noto Sans TC', sans-serif; color: var(--b-text); line-height: 1.8; background-color: #fffaf7; scroll-behavior: smooth; }
+.b_container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+/* 導覽列 */
+.b_header { background: #fff; border-bottom: 1px solid #eee; padding: 15px 0; position: sticky; top: 0; z-index: 100; }
+.b_nav_flex { display: flex; justify-content: space-between; align-items: center; }
+.b_logo { font-size: 1.6rem; font-weight: bold; color: var(--b-main); text-decoration: none; }
+.b_menu a { margin-left: 20px; text-decoration: none; color: #888; font-size: 14px; }
+
+/* 商品主區域 */
+.b_product_main { display: flex; gap: 40px; padding: 50px 0; }
+.b_left_col, .b_right_col { flex: 1; }
+
+.b_stage { height: 450px; display: flex; overflow: hidden; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.b_stage img { width: 100%; flex-shrink: 0; object-fit: cover; }
+.b_thumbs { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+.b_thumbs img { width: 60px; height: 60px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+.b_thumbs img:hover { border-color: var(--b-main); }
+
+/* 價格與選項 */
+.b_breadcrumb { font-size: 13px; color: #aaa; margin-bottom: 10px; }
+.b_title { font-size: 1.8rem; margin: 0; color: #4a4a4a; }
+.b_slogan { color: #888; margin-bottom: 20px; }
+.b_price_box { margin: 20px 0; display: flex; align-items: baseline; gap: 10px; }
+.b_price { font-size: 2.2rem; font-weight: bold; color: var(--b-accent); }
+.b_stock { font-size: 13px; color: #999; }
+
+.b_field { margin-bottom: 25px; }
+.b_field label { display: block; font-weight: bold; margin-bottom: 8px; }
+
+.b_color_list { display: flex; gap: 15px; margin: 10px 0; }
+.b_color_list input { display: none; }
+.b_color_list label { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #fff; outline: 1px solid #eee; cursor: pointer; }
+.b_color_list input:checked + label { outline: 2px solid var(--b-accent); transform: scale(1.1); }
+
+#b_text { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+#b_qty { width: 80px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; text-align: center; }
+
+.b_action_row { display: flex; gap: 15px; margin-top: 25px; }
+.b_cart_btn { flex: 1; padding: 16px; background: var(--b-main); color: #fff; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 1.1rem; opacity: 0.8; }
+.b_cart_btn:hover { opacity: 1; }
+
+/* 詳細內容 */
+.b_details { padding: 80px 0; border-top: 1px solid #eee; }
+.b_sec_head { text-align: center; margin-bottom: 50px; }
+.b_bar { width: 30px; height: 3px; background: var(--b-main); margin: 10px auto; }
+.b_item { display: flex; align-items: center; gap: 50px; margin-bottom: 60px; }
+.b_item img { width: 50%; border-radius: 20px; }
+.b_flip { flex-direction: row-reverse; }
+
+.b_scene_banner img { width: 100%; border-radius: 20px; margin-bottom: 100px; }
+
+/* 服務條與指南 */
+.b_service_banner { background: #fef9f5; padding: 60px 0; }
+.b_service_grid { display: flex; justify-content: space-around; text-align: center; }
+.b_s_item img { width: 50px; margin-bottom: 15px; }
+
+.b_guide_section { background: #fff; padding: 50px; border-radius: 20px; margin: 40px 0 100px; }
+.b_guide_grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+.b_guide_box h3 { font-size: 1.1rem; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
+.b_guide_box p { font-size: 14px; color: #777; margin: 10px 0; }
+
+.b_footer { background: #333; color: #fff; text-align: center; padding: 30px 0; font-size: 12px; }
+
+@media (max-width: 768px) {
+    .b_product_main, .b_item, .b_service_grid, .b_guide_grid { flex-direction: column; text-align: center; }
+    .b_item img { width: 100%; }
+}
