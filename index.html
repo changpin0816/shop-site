@@ -6,6 +6,35 @@
     <title>尚水也 - 療癒日常實作專案</title>
     <link rel="stylesheet" href="index_style.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        .add_cart_btn {
+            display: block; width: 100%; padding: 10px; margin-top: 10px;
+            background-color: #6d5b53; color: white; border: none; cursor: pointer; text-align: center;
+        }
+        .add_cart_btn:hover { background-color: #55453f; }
+        
+        #cart_section {
+            background-color: #fcfcfc; border: 1px solid #eee; border-radius: 8px;
+            padding: 30px; margin-top: 40px; margin-bottom: 40px;
+        }
+        .cart_list_area { margin-bottom: 20px; }
+        #cartList { list-style: none; padding: 0; }
+        #cartList li { 
+            background: #fff; border: 1px solid #ddd; padding: 15px; 
+            margin-bottom: 8px; border-radius: 4px; display: flex; 
+            flex-direction: column; 
+        }
+        
+        .checkout_form .form_group { margin-bottom: 15px; }
+        .checkout_form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .checkout_form input { width: 100%; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .submit_checkout_btn {
+            width: 100%; padding: 12px; background-color: #b05c4d; color: white; 
+            border: none; font-size: 16px; font-weight: bold; cursor: pointer; border-radius: 4px;
+        }
+        .submit_checkout_btn:hover { background-color: #924b3f; }
+    </style>
 </head>
 <body>
 
@@ -16,7 +45,7 @@
             <a href="index.html">首頁</a>
             <a href="#product_section">所有商品</a>
             <a href="birthday.html">驚喜生日禮</a>
-            <a href="#" class="cart_icon">🛒</a>
+            <a href="#cart_section" class="cart_icon">🛒</a>
         </nav>
     </div>
 </header>
@@ -44,13 +73,13 @@
                 <h3>療癒系客製化保溫杯</h3>
                 <p>五款質感色系，專屬雷雕刻字</p>
                 <div class="price">NT$ 499</div>
-                <a href="a_product.html" class="view_btn">查看詳情</a>
+                <a href="a_product.html" class="view_btn">查看詳情並客製</a>
             </div>
         </div>
 
         <div class="product_card">
             <div class="product_img">
-                <img src="images/b_Pic_26.jpg" alt="質感馬克杯" onerror="this.src='https://placehold.co/400x400?text=Student+B+Image'">
+                <img src="images/b_Pic_26.jpg" alt="質感馬克杯" onerror="this.src='https://placehold.co/400x400?text=Cup'">
             </div>
             <div class="product_info">
                 <h3>質感手作馬克杯</h3>
@@ -62,7 +91,7 @@
 
         <div class="product_card">
             <div class="product_img">
-                <img src="images/c_Pic_main.jpg" alt="文青隨行杯" onerror="this.src='https://placehold.co/400x400?text=Student+C+Image'">
+                <img src="images/c_Pic_main.jpg" alt="文青隨行杯" onerror="this.src='https://placehold.co/400x400?text=Coffee'">
             </div>
             <div class="product_info">
                 <h3>文青風隨行咖啡杯</h3>
@@ -74,12 +103,129 @@
     </div>
 </section>
 
+<section class="container" id="cart_section">
+    <div class="section_title">
+        <h2>🛒 我的購物車與結帳</h2>
+        <div class="title_line"></div>
+    </div>
+    
+    <div class="cart_list_area">
+        <ul id="cartList"></ul>
+        <h4 style="text-align: right; margin-top: 10px;">總計金額：NT$ <span id="totalPrice">0</span></h4>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #ddd; margin: 20px 0;">
+
+    <div class="checkout_form">
+        <h3>填寫訂購資料</h3>
+        <div class="form_group">
+            <label for="userName">訂購人姓名：</label>
+            <input type="text" id="userName" placeholder="請輸入姓名 (必填)">
+        </div>
+        <div class="form_group">
+            <label for="userPhone">聯絡電話：</label>
+            <input type="text" id="userPhone" placeholder="請輸入電話 (必填)">
+        </div>
+        <button id="submitCheckoutBtn" class="submit_checkout_btn">確認送出訂單</button>
+    </div>
+</section>
+
 <footer class="main_footer">
     <div class="container">
         <p>© 2026 尚水也敬賀 | 網頁設計專案實作教學</p>
         <p style="font-size: 12px; color: #999; margin-top: 10px;">本網站僅供專案練習使用，非正式營業電商</p>
     </div>
 </footer>
+
+<script>
+    // --- 配置設定 ---
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwOEVcyM5U_vOZ1ylpmDY6VTY891L5IBDIjOh0qwwf0MP0zDLblBvXJ_92C_OHj8wd_nw/exec'; 
+
+    // 1. 初始化購物車 (從 localStorage 讀取)
+    function getCart() {
+        return JSON.parse(localStorage.getItem('shangShuiCart')) || [];
+    }
+
+    // 2. 更新購物車畫面的函數
+    function updateCartUI() {
+        const cart = getCart();
+        const cartList = document.getElementById('cartList');
+        const totalPriceEl = document.getElementById('totalPrice');
+        let currentTotal = 0;
+
+        cartList.innerHTML = ''; 
+
+        if (cart.length === 0) {
+            cartList.innerHTML = '<li style="justify-content: center; color: #888; padding: 20px;">目前購物車是空的，快去挑選商品吧！</li>';
+            totalPriceEl.textContent = 0;
+            return;
+        }
+
+        cart.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <strong>[${index + 1}] ${item.name} x ${item.quantity}</strong>
+                    <span>NT$ ${item.price * item.quantity}</span>
+                </div>
+                <div style="font-size: 13px; color: #666; margin-top: 5px;">
+                    規格：${item.color || '預設'} | 刻字：${item.engraving || '無'}
+                </div>
+            `;
+            cartList.appendChild(li);
+            currentTotal += (item.price * item.quantity);
+        });
+
+        totalPriceEl.textContent = currentTotal;
+    }
+
+    // 3. 網頁載入時執行
+    window.onload = function() {
+        updateCartUI();
+    };
+
+    // 4. 【重點修改】結帳送出邏輯 (將整袋商品陣列傳送出去)
+    document.getElementById('submitCheckoutBtn').addEventListener('click', function() {
+        const cart = getCart();
+        const name = document.getElementById('userName').value.trim();
+        const phone = document.getElementById('userPhone').value.trim();
+
+        if (cart.length === 0) {
+            alert('購物車是空的，請先挑選商品喔！');
+            return;
+        }
+
+        if (!name || !phone) {
+            alert('請完整填寫姓名與聯絡電話！');
+            return;
+        }
+
+        // --- 這裡改為直接傳送 cart 陣列，不要再用 map 合併成文字了 ---
+        const formData = {
+            name: name,
+            phone: phone,
+            cart: cart 
+        };
+
+        const btn = this;
+        btn.textContent = '訂單傳送中...';
+        btn.disabled = true;
+
+        fetch(scriptURL, {
+            method: 'POST',
+            body: JSON.stringify(formData)
+        }).then(response => {
+            alert('🎉 訂單結帳成功！商品已分行寫入 Google 試算表。');
+            localStorage.removeItem('shangShuiCart');
+            location.reload(); 
+
+        }).catch(error => {
+            alert('發生錯誤，請確認 GAS 網址與網路連線。');
+            btn.textContent = '確認送出訂單';
+            btn.disabled = false;
+        });
+    });
+</script>
 
 </body>
 </html>

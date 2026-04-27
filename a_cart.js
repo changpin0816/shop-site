@@ -22,17 +22,45 @@ document.querySelector('.a_wish_btn').onclick = function() {
     this.style.color = (this.style.color === 'rgb(231, 111, 81)') ? '#ccc' : '#e76f51';
 };
 
-// 3. 購物車按鈕邏輯
+// 3. 【修正版】購物車按鈕邏輯 - 真正寫入資料到 localStorage
 document.getElementById('a_btn').onclick = function() {
-    const textVal = document.getElementById('a_text').value;
-    const qtyVal = document.getElementById('a_qty').value;
+    const textVal = document.getElementById('a_text').value.trim();
+    const qtyVal = parseInt(document.getElementById('a_qty').value);
     const selectedColor = document.querySelector('input[name="color_select"]:checked').getAttribute('data-name');
     
-    if (textVal.trim() === "") {
+    // 基本驗證
+    if (textVal === "") {
         alert("請輸入刻字內容喔！");
-    } else if (qtyVal < 1 || qtyVal > 5) {
+        return; // 停止執行
+    } 
+    if (qtyVal < 1 || qtyVal > 5) {
         alert("購買數量須在 1 到 5 之間喔！");
-    } else {
-        alert("🎉 已加入購物車！\n顏色：" + selectedColor + "\n數量：" + qtyVal + " 個\n刻字：" + textVal);
+        return; // 停止執行
     }
+
+    // --- 開始寫入資料 ---
+    
+    // A. 建立商品物件
+    const productItem = {
+        name: "療癒系客製化保溫杯",
+        price: 499,
+        color: selectedColor,
+        engraving: textVal,
+        quantity: qtyVal
+    };
+
+    // B. 從 localStorage 讀取現有的購物車（若沒有則給空陣列）
+    let cart = JSON.parse(localStorage.getItem('shangShuiCart')) || [];
+
+    // C. 將新商品存入陣列
+    cart.push(productItem);
+
+    // D. 存回 localStorage
+    localStorage.setItem('shangShuiCart', JSON.stringify(cart));
+
+    // E. 彈出成功訊息並跳轉回首頁
+    alert("🎉 已成功加入購物車！\n顏色：" + selectedColor + "\n刻字：" + textVal);
+    
+    // 跳轉回首頁的購物車區塊
+    window.location.href = 'index.html#cart_section';
 };

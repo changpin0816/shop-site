@@ -21,20 +21,45 @@ b_styleRadios.forEach(radio => {
     });
 });
 
-// 2. 購物車驗證與提示
+// 2. 【修正版】購物車驗證與資料存檔
 document.getElementById('b_btn').onclick = function() {
-    const textVal = document.getElementById('b_text').value;
-    const qtyVal = document.getElementById('b_qty').value;
+    const textVal = document.getElementById('b_text').value.trim();
+    const qtyVal = parseInt(document.getElementById('b_qty').value);
     const selectedStyle = document.querySelector('input[name="color_select"]:checked').getAttribute('data-name');
     
-    if (textVal.trim() === "") {
+    // 驗證邏輯
+    if (textVal === "") {
         alert("請輸入要刻製的姓名或文字喔！");
-    } else if (qtyVal < 1 || qtyVal > 10) {
+        return; 
+    } 
+    if (qtyVal < 1 || qtyVal > 10) {
         alert("購買數量請在 1 到 10 之間喔！");
-    } else {
-        alert(
-            "🎉 已加入購物車！\n款式：" + selectedStyle + 
-            "\n數量：" + qtyVal + " 個\n刻字：" + textVal
-        );
+        return;
     }
+
+    // --- 開始寫入資料 ---
+
+    // A. 建立商品物件 (名稱請與首頁描述一致，價格設定為 350)
+    const productItem = {
+        name: "質感手作馬克杯",
+        price: 350,
+        color: selectedStyle,
+        engraving: textVal,
+        quantity: qtyVal
+    };
+
+    // B. 從 localStorage 讀取現有的購物車 (名稱必須是 'shangShuiCart')
+    let cart = JSON.parse(localStorage.getItem('shangShuiCart')) || [];
+
+    // C. 將馬克杯資料推入陣列
+    cart.push(productItem);
+
+    // D. 存回 localStorage
+    localStorage.setItem('shangShuiCart', JSON.stringify(cart));
+
+    // E. 提示並跳轉
+    alert("🎉 已成功加入購物車！\n款式：" + selectedStyle + "\n數量：" + qtyVal + " 個\n刻字：" + textVal);
+    
+    // 跳轉回首頁查看合併後的購物車
+    window.location.href = 'index.html#cart_section';
 };
